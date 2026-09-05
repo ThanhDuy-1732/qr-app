@@ -6,7 +6,7 @@ import MessageList from '@/app/components/MessageList'
 export const dynamic = 'force-dynamic'
 
 export default async function Home() {
-  const messages = getMessages()
+  const messages = await getMessages()
 
   return (
     <main className="main-layout">
@@ -14,11 +14,11 @@ export default async function Home() {
       <header className="hero">
         <div className="hero-glow" aria-hidden="true" />
         <h1 className="hero-title">
-          <span className="hero-emoji">💸</span>
-          Ủng hộ tôi
+          <span className="hero-emoji">✨</span>
+          Nơi chấp cánh ước mơ
         </h1>
         <p className="hero-subtitle">
-          Nếu bạn thấy nội dung của tôi hữu ích, hãy mời tôi một ly cà phê ☕
+          Hãy viết ước mơ của bạn vào đây và chúng ta cùng nhau cầu nguyện cho giấc mơ của bạn thành hiện thực 🙏
         </p>
       </header>
 

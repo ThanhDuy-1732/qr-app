@@ -24,7 +24,7 @@ export async function submitMessage(
   }
 
   try {
-    saveMessage(name, message)
+    await saveMessage(name, message)
     revalidatePath('/')
     return { success: true }
   } catch {

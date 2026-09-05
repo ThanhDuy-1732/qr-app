@@ -15,7 +15,7 @@ function formatDate(iso: string): string {
 }
 
 function getInitial(name: string): string {
-  const trimmed = name.trim()
+  const trimmed = (name ?? '').trim()
   if (!trimmed || trimmed === 'Ẩn danh') return '?'
   // Get first character of each word, max 2
   const words = trimmed.split(/\s+/)
@@ -65,20 +65,20 @@ export default function MessageList({ messages }: MessageListProps) {
             style={{ background: getAvatarColor(msg.id) }}
             aria-hidden="true"
           >
-            {getInitial(msg.name)}
+            {getInitial(msg.author)}
           </div>
           <div className="message-body">
             <div className="message-header">
-              <span className="message-author">{msg.name || 'Ẩn danh'}</span>
+              <span className="message-author">{msg.author || 'Ẩn danh'}</span>
               <time
                 className="message-time"
-                dateTime={msg.timestamp}
+                dateTime={msg.createdAt}
                 suppressHydrationWarning
               >
-                {formatDate(msg.timestamp)}
+                {formatDate(msg.createdAt)}
               </time>
             </div>
-            <p className="message-text">{msg.message}</p>
+            <p className="message-text">{msg.text}</p>
           </div>
         </li>
       ))}

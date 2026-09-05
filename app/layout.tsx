@@ -11,9 +11,9 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'Ủng hộ tôi — QR nhận tiền & Lời nhắn',
+  title: 'Nơi chấp cánh ước mơ ✨',
   description:
-    'Quét mã QR để ủng hộ và để lại lời nhắn cho tôi. Cảm ơn sự hỗ trợ của bạn!',
+    'Hãy viết ước mơ của bạn vào đây và chúng ta cùng nhau cầu nguyện cho giấc mơ của bạn thành hiện thực.',
 }
 
 export const viewport: Viewport = {
