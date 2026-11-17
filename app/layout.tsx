@@ -1,13 +1,27 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter } from 'next/font/google'
+import { Fraunces, Inter, Space_Grotesk } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/app/components/ThemeProvider'
 import ThemeControls from '@/app/components/ThemeControls'
+import SkyBackdrop from '@/app/components/SkyBackdrop'
 
 const inter = Inter({
   subsets: ['latin', 'vietnamese'],
   variable: '--font-inter',
   display: 'swap',
+})
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin', 'vietnamese'],
+  variable: '--font-space',
+  display: 'swap',
+})
+
+const fraunces = Fraunces({
+  subsets: ['latin', 'vietnamese'],
+  variable: '--font-fraunces',
+  display: 'swap',
+  style: ['normal', 'italic'],
 })
 
 export const metadata: Metadata = {
@@ -36,13 +50,18 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="vi" className={inter.variable} suppressHydrationWarning>
+    <html
+      lang="vi"
+      className={`${inter.variable} ${spaceGrotesk.variable} ${fraunces.variable}`}
+      suppressHydrationWarning
+    >
       {/* suppressHydrationWarning needed because anti-FOUC script mutates html attrs */}
       <head>
         <script dangerouslySetInnerHTML={{ __html: antiFlashScript }} />
       </head>
       <body suppressHydrationWarning>
         <ThemeProvider>
+          <SkyBackdrop />
           {children}
           <ThemeControls />
         </ThemeProvider>

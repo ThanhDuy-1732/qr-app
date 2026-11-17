@@ -8,76 +8,99 @@
 /* ===== DARK THEME (default) ===== */
 :root,
 [data-theme="dark"] {
-  --bg:          #07070f;
-  --bg-2:        #0e0e1c;
-  --bg-card:     rgba(255, 255, 255, 0.04);
-  --bg-card-h:   rgba(255, 255, 255, 0.07);
-  --border:      rgba(255, 255, 255, 0.08);
-  --border-h:    rgba(255, 255, 255, 0.16);
-  --field-bg:    rgba(255, 255, 255, 0.06);
+  --sky-0:       #04050d;
+  --sky-1:       #090b1a;
+  --violet:      #7c5cff;
+  --cyan:        #22d3ee;
+  --rose:        #f472b6;
 
-  --text-1:      #f1f0ff;
-  --text-2:      #a8a4c8;
-  --text-3:      #6b6889;
+  --text-1:      #eef0ff;
+  --text-2:      #a9abc8;
+  --text-3:      #8f92b5;
 
-  --shadow:      0 4px 24px rgba(0, 0, 0, 0.5);
-  --shadow-lg:   0 8px 48px rgba(0, 0, 0, 0.7);
-  --shadow-panel:0 8px 40px rgba(0, 0, 0, 0.6);
+  --glass:       rgba(255, 255, 255, 0.045);
+  --glass-h:     rgba(255, 255, 255, 0.075);
+  --line:        rgba(255, 255, 255, 0.09);
+  --line-h:      rgba(255, 255, 255, 0.18);
 
-  --scroll-track: #0e0e1c;
-  --scroll-thumb: rgba(139, 92, 246, 0.4);
+  --aurora-1:    rgba(124, 92, 255, 0.55);
+  --aurora-2:    rgba(14, 116, 144, 0.42);
+  --aurora-3:    rgba(190, 24, 93, 0.28);
+  --star:        #ffffff;
+  --star-opacity: 0.55;
+  --cursor-glow: rgba(124, 92, 255, 0.16);
+
+  --title-grad:  linear-gradient(100deg, #ffffff 8%, #c4b5fd 30%, #67e8f9 52%, #f9a8d4 72%, #ffffff 92%);
 }
 
-/* ===== LIGHT THEME ===== */
+/* ===== LIGHT THEME (dawn sky) ===== */
 [data-theme="light"] {
-  /* Background: warm lavender page, pure white cards */
-  --bg:          #ece8ff;
-  --bg-2:        #f8f6ff;
-  --bg-card:     #ffffff;
-  --bg-card-h:   #f9f8ff;
-  --border:      rgba(109, 40, 217, 0.13);
-  --border-h:    rgba(109, 40, 217, 0.32);
-  --field-bg:    #f5f3ff;
+  --sky-0:       #f6f1ff;
+  --sky-1:       #eef8ff;
+  --violet:      #6d28d9;
+  --cyan:        #0e7490;
+  --rose:        #db2777;
 
-  /* Text: deep navy-purple hierarchy */
-  --text-1:      #18162e;
+  --text-1:      #1b1733;
   --text-2:      #4a4670;
-  --text-3:      #8884aa;
+  --text-3:      #55526e;
 
-  /* Shadows: purple-tinted elevation */
-  --shadow:      0 2px 12px rgba(109, 40, 217, 0.09), 0 1px 3px rgba(0, 0, 0, 0.05);
-  --shadow-lg:   0 8px 40px rgba(109, 40, 217, 0.14), 0 2px 8px rgba(0, 0, 0, 0.06);
-  --shadow-panel:0 8px 40px rgba(109, 40, 217, 0.18), 0 2px 8px rgba(0, 0, 0, 0.08);
+  --glass:       #ffffff;
+  --glass-h:     #fffdfa;
+  --line:        rgba(27, 23, 51, 0.12);
+  --line-h:      rgba(27, 23, 51, 0.28);
 
-  --scroll-track: #e4dff8;
-  --scroll-thumb: rgba(109, 40, 217, 0.28);
+  --aurora-1:    rgba(124, 92, 255, 0.20);
+  --aurora-2:    rgba(34, 211, 238, 0.16);
+  --aurora-3:    rgba(244, 114, 182, 0.15);
+  --star:        rgba(109, 40, 217, 0.7);
+  --star-opacity: 0.18;
+  --cursor-glow: rgba(219, 39, 119, 0.10);
+
+  --title-grad:  linear-gradient(100deg, #4c1d95 0%, #7c3aed 38%, #0e7490 62%, #db2777 100%);
 }
 
 /* ===== SHARED TOKENS ===== */
 :root {
-  --purple:      #8b5cf6;
+  --font-sans:   var(--font-inter), 'Inter', system-ui, sans-serif;
+  --font-display: var(--font-space), var(--font-inter), system-ui, sans-serif;
+  --font-serif:  var(--font-fraunces), Georgia, serif;
+
+  --radius-sm:   12px;
+  --radius:      20px;
+  --radius-lg:   28px;
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+  --transition:  0.2s ease;
+
+  --shadow:      0 8px 32px rgba(0, 0, 0, 0.35);
+  --shadow-lg:   0 24px 70px rgba(0, 0, 0, 0.5);
+  --shadow-panel: 0 16px 50px rgba(0, 0, 0, 0.55);
+
+  /* Compatibility aliases for the legacy CSS still present until Task 6 */
+  --bg:          var(--sky-0);
+  --bg-2:        var(--sky-1);
+  --bg-card:     var(--glass);
+  --bg-card-h:   var(--glass-h);
+  --border:      var(--line);
+  --border-h:    var(--line-h);
+  --field-bg:    rgba(255, 255, 255, 0.05);
+  --purple:      var(--violet);
   --purple-d:    #6d28d9;
-  --purple-glow: rgba(139, 92, 246, 0.35);
+  --purple-glow: rgba(124, 92, 255, 0.35);
   --blue:        #3b82f6;
   --teal:        #2dd4bf;
-
-  --success:     #10b981;
-  --success-bg:  rgba(16, 185, 129, 0.12);
-  --error:       #f87171;
-  --error-bg:    rgba(248, 113, 113, 0.12);
-
-  --radius-sm:   8px;
-  --radius:      16px;
-  --radius-lg:   24px;
-
-  --font-sans:   var(--font-inter, 'Inter', system-ui, sans-serif);
-  --transition:  0.2s ease;
+  --success:     #34d399;
+  --success-bg:  rgba(52, 211, 153, 0.12);
+  --error:       #fb7185;
+  --error-bg:    rgba(251, 113, 133, 0.12);
+  --scroll-track: var(--sky-1);
+  --scroll-thumb: rgba(124, 92, 255, 0.35);
 }
 
 /* ===== BASE ===== */
 html {
   font-family: var(--font-sans);
-  background: var(--custom-bg, var(--bg));
+  background: var(--custom-bg, var(--sky-0));
   color: var(--text-1);
   line-height: 1.6;
   scroll-behavior: smooth;
@@ -86,23 +109,166 @@ html {
 
 body {
   min-height: 100dvh;
-  transition: background 0.35s ease, color 0.25s ease;
+  background: transparent;
+  transition: color 0.25s ease;
 }
 
-/* Dark body gradient */
-[data-theme="dark"] body {
-  background:
-    radial-gradient(ellipse 80% 50% at 20% -10%, rgba(109, 40, 217, 0.18) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 80% 110%, rgba(59, 130, 246, 0.12) 0%, transparent 60%),
-    var(--custom-bg, var(--bg));
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
 }
 
-/* Light body gradient — more vibrant to give page depth */
-[data-theme="light"] body {
-  background:
-    radial-gradient(ellipse 80% 55% at 15% -5%,  rgba(139, 92, 246, 0.16) 0%, transparent 55%),
-    radial-gradient(ellipse 65% 45% at 85% 105%, rgba(59, 130, 246, 0.11) 0%, transparent 55%),
-    var(--custom-bg, var(--bg));
+/* ===== SKY BACKDROP ===== */
+.sky {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.sky-aurora {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+.sky-aurora.one {
+  width: 75vmax;
+  height: 75vmax;
+  top: -34vmax;
+  left: -24vmax;
+  background: radial-gradient(circle at 50% 50%, var(--aurora-1) 0%, transparent 62%);
+  animation: aurora-drift-1 26s ease-in-out infinite alternate;
+}
+
+.sky-aurora.two {
+  width: 62vmax;
+  height: 62vmax;
+  top: 4vmax;
+  right: -28vmax;
+  background: radial-gradient(circle at 50% 50%, var(--aurora-2) 0%, transparent 62%);
+  animation: aurora-drift-2 34s ease-in-out infinite alternate;
+}
+
+.sky-aurora.three {
+  width: 56vmax;
+  height: 56vmax;
+  bottom: -30vmax;
+  left: 12vmax;
+  background: radial-gradient(circle at 50% 50%, var(--aurora-3) 0%, transparent 62%);
+  animation: aurora-drift-3 42s ease-in-out infinite alternate;
+}
+
+@keyframes aurora-drift-1 {
+  from { transform: translate3d(-3%, -2%, 0) scale(1); }
+  to   { transform: translate3d(6%, 4%, 0) scale(1.12); }
+}
+
+@keyframes aurora-drift-2 {
+  from { transform: translate3d(2%, -3%, 0) scale(1.04); }
+  to   { transform: translate3d(-5%, 5%, 0) scale(0.96); }
+}
+
+@keyframes aurora-drift-3 {
+  from { transform: translate3d(-2%, 3%, 0) scale(0.98); }
+  to   { transform: translate3d(5%, -4%, 0) scale(1.1); }
+}
+
+.sky-stars {
+  position: absolute;
+  inset: -10%;
+  background-repeat: repeat;
+  will-change: opacity;
+}
+
+.sky-stars.layer-a {
+  --star-opacity: 0.55;
+  opacity: var(--star-opacity);
+  background-image:
+    radial-gradient(1px 1px at 24px 36px, var(--star) 50%, transparent 51%),
+    radial-gradient(1px 1px at 128px 92px, var(--star) 50%, transparent 51%),
+    radial-gradient(1.4px 1.4px at 212px 24px, var(--star) 50%, transparent 51%),
+    radial-gradient(1px 1px at 318px 148px, var(--star) 50%, transparent 51%),
+    radial-gradient(1px 1px at 402px 64px, var(--star) 50%, transparent 51%),
+    radial-gradient(1.2px 1.2px at 466px 208px, var(--star) 50%, transparent 51%),
+    radial-gradient(1px 1px at 88px 244px, var(--star) 50%, transparent 51%),
+    radial-gradient(1px 1px at 284px 300px, var(--star) 50%, transparent 51%);
+  background-size: 520px 520px;
+  animation: star-twinkle 6s ease-in-out infinite alternate;
+}
+
+.sky-stars.layer-b {
+  --star-opacity: 0.35;
+  opacity: var(--star-opacity);
+  background-image:
+    radial-gradient(1px 1px at 46px 118px, var(--star) 50%, transparent 51%),
+    radial-gradient(1px 1px at 164px 42px, var(--star) 50%, transparent 51%),
+    radial-gradient(1px 1px at 246px 206px, var(--star) 50%, transparent 51%),
+    radial-gradient(1.2px 1.2px at 334px 96px, var(--star) 50%, transparent 51%),
+    radial-gradient(1px 1px at 78px 322px, var(--star) 50%, transparent 51%),
+    radial-gradient(1px 1px at 296px 286px, var(--star) 50%, transparent 51%),
+    radial-gradient(1px 1px at 352px 344px, var(--star) 50%, transparent 51%);
+  background-size: 380px 380px;
+  animation: star-twinkle 9s ease-in-out infinite alternate;
+}
+
+@keyframes star-twinkle {
+  from { opacity: calc(var(--star-opacity) * 0.45); }
+  to   { opacity: var(--star-opacity); }
+}
+
+[data-theme="light"] .sky-stars {
+  --star-opacity: 0.18;
+}
+
+.sky-shoot {
+  position: absolute;
+  top: 18%;
+  left: -15%;
+  width: 160px;
+  height: 1.5px;
+  border-radius: 100px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.9));
+  transform: rotate(-14deg);
+  opacity: 0;
+  animation: shoot-across 13s linear infinite;
+  animation-delay: 5s;
+}
+
+@keyframes shoot-across {
+  0%, 72%  { opacity: 0; transform: translate3d(0, 0, 0) rotate(-14deg); }
+  74%      { opacity: 0.9; }
+  86%      { opacity: 0; transform: translate3d(120vw, 34vh, 0) rotate(-14deg); }
+  100%     { opacity: 0; transform: translate3d(120vw, 34vh, 0) rotate(-14deg); }
+}
+
+[data-theme="light"] .sky-shoot {
+  display: none;
+}
+
+.sky-cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 520px;
+  height: 520px;
+  margin: -260px 0 0 -260px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--cursor-glow) 0%, transparent 66%);
+  transform: translate3d(var(--cx, 50vw), var(--cy, 50vh), 0);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  will-change: transform;
+  pointer-events: none;
+}
+
+@media (pointer: fine) {
+  .sky-cursor { opacity: 1; }
+}
+
+@media (max-width: 700px) {
+  .sky-shoot { display: none; }
+  .sky-cursor { display: none; }
 }
 
 /* ===== UTILITY ===== */
