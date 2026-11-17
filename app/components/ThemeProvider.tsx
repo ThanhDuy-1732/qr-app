@@ -30,6 +30,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const savedTheme = (localStorage.getItem('theme') as Theme | null) ?? 'dark'
     const savedBg = localStorage.getItem('customBg') ?? ''
+    // One-time sync from localStorage after hydration. The inline script already
+    // applied the visual theme before paint; this only syncs the settings panel.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setThemeState(savedTheme)
     setCustomBgState(savedBg)
   }, [])
