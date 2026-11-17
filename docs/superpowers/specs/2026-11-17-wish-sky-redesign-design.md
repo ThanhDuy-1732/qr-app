@@ -94,7 +94,9 @@ Accent đậm hơn để đủ tương phản: `#6d28d9`, `#0e7490`, `#db2777`.
 Card trắng với bóng tím nhẹ. QR vẫn trên nền trắng nguyên chất.
 
 `--custom-bg` (màu nền người dùng chọn) vẫn hoạt động: nó là màu nền cơ bản, các lớp aurora
-pha loãng phía trên.
+pha loãng phía trên. Nếu độ sáng của màu tự chọn lệch khỏi theme (ví dụ chọn trắng khi đang ở
+theme tối), phủ thêm một **scrim** màu nền theme ở ~65% để chữ vẫn đạt tương phản; màu preset
+đã được chọn đúng cho từng theme nên không bị scrim.
 
 ### 4.3. Typography
 
@@ -126,7 +128,7 @@ body `1rem`; metadata `.8125rem`. Line-height 1.05 cho display, 1.7 cho body.
 ```
 <SkyBackdrop />            (aurora + starfield + sao băng thưa, aria-hidden)
   <header class="hero">
-     brand ......................... wish count
+     ✦ (trang trí, aria-hidden) .... wish count
      kicker
      h1: Nơi chấp cánh / ước mơ (Fraunces italic, gradient)
      subtitle
@@ -155,8 +157,11 @@ body `1rem`; metadata `.8125rem`. Line-height 1.05 cho display, 1.7 cho body.
   font Fraunces italic, gradient chuyển động chậm.
 - Subtitle: "Mỗi lời nhắn là một ngôi sao. Viết điều bạn đang mong, cả bầu trời sẽ cùng cầu nguyện."
 - CTA chính cuộn mượt tới form; CTA phụ cuộn tới wall (dùng `scrollIntoView` + `scroll-margin-top`).
-- Count pill: "**N** ngôi sao đang sáng" lấy từ `messages.length`.
-- Không có nav nhiều mục; brand + count là đủ.
+- Count pill: "**N** ngôi sao đang sáng" lấy từ `messages.length`, đếm tăng dần khi vào khung hình.
+- **Không phát minh brand/logo**: repo không có tên hay wordmark riêng. Góc trái chỉ là một glyph `✦`
+  nhỏ, trang trí (`aria-hidden`), không phải chữ; count pill nằm bên phải. Metadata giữ nguyên
+  "Nơi chấp cánh ước mơ ✨". Lý do: lặp lại h1 ở top row sẽ đọc như lỗi, còn tự đặt tên mới thì
+  không đúng danh tính của trang.
 
 ### 5.2. Khu gửi lời nhắn + ủng hộ
 
@@ -168,6 +173,10 @@ Bố cục desktop 2 cột `1.15fr / .85fr`, mobile 1 cột **form trước, QR 
 - Tên (không bắt buộc), Lời nhắn (bắt buộc, `maxLength=500`).
 - Đếm ký tự trực tiếp `0/500`, đổi màu khi gần giới hạn.
 - Lỗi `role="alert"`; thành công `role="status"` + hiệu ứng sao băng ngắn trong card.
+- **Không tự cuộn** sau khi gửi (tránh scroll-jacking, nhất là trên mobile). Trạng thái thành công
+  ở lại tại chỗ, hiện "Ngôi sao của bạn đã lên trời ✦" kèm nút **"Xem ngôi sao của bạn ↓"**.
+  Bấm nút: cuộn mượt tới `#wish-wall`, gắn class `is-new` cho card đầu tiên trong 2.4s và
+  chuyển focus tới heading của wall (`tabindex="-1"`). Không cần đồng bộ state giữa form và wall.
 - Nút "Thả sao lên trời" — pending thì spinner + "Đang gửi...".
 - Toàn bộ input `font-size: 16px` trên mobile để tránh auto-zoom iOS.
 
@@ -236,10 +245,10 @@ Aurora **không dùng `filter: blur()`** — dùng gradient có stop mềm để
 ### Tầng 4 — Khoảnh khắc
 
 - Gửi thành công: một vệt sao băng chạy ngang card form (1.1s), rồi badge thành công
-  "Ngôi sao của bạn đã lên trời ✦"; nút trở lại bình thường.
-- Ngôi sao mới: card đầu tiên trong wall nhận class `is-new`, viền sáng + sparkle trong 2.4s
-  (chỉ khi vừa gửi xong trong session).
-- Count-up: số sao đếm tăng dần 1.2s khi wall vào khung hình (một lần).
+  "Ngôi sao của bạn đã lên trời ✦" + nút "Xem ngôi sao của bạn ↓"; nút submit trở lại bình thường.
+- Ngôi sao mới: **chỉ khi người dùng bấm "Xem ngôi sao của bạn"**, card đầu tiên trong wall nhận
+  class `is-new` (viền sáng + sparkle 2.4s) để hiệu ứng không bị trôi mất khi wall còn dưới màn hình.
+- Count-up: số sao đếm tăng dần 1.2s khi trang tải xong (một lần).
 
 Để phát lại hiệu ứng mỗi lần gửi, `ActionState` thêm `at?: number` (timestamp) khi thành công.
 
@@ -255,6 +264,8 @@ Aurora **không dùng `filter: blur()`** — dùng gradient có stop mềm để
 ## 7. Accessibility
 
 - Tương phản: text-1 trên nền ≥ 12:1; text-2 ≥ 6:1; text-3 ≥ 4.5:1; kiểm tra cả light theme.
+  Cam kết này áp dụng cho theme và các màu preset; màu tự chọn lạ được scrim tự động (mục 4.2)
+  bảo vệ thay vì chặn người dùng.
 - `:focus-visible` rõ ràng (2px cyan + offset 3px) cho mọi control.
 - Skip link "Bỏ qua đến lời nhắn" (ẩn đến khi focus).
 - Toàn bộ nền động là `aria-hidden`, `pointer-events: none`.
@@ -269,7 +280,9 @@ Aurora **không dùng `filter: blur()`** — dùng gradient có stop mềm để
 - Font self-host qua `next/font`; chỉ load 3 family, subset `vietnamese` + `latin`.
 - Starfield bằng gradient, không tạo hàng trăm DOM node.
 - `will-change` chỉ đặt trên aurora/cursor và gỡ khi không cần.
-- Trên mobile: tắt cursor glow và sao băng nền; giảm số lớp aurora từ 3 → 2.
+- Trên mobile: tắt cursor glow và sao băng nền; giảm số lớp aurora từ 3 → 2; **bỏ
+  `backdrop-filter`**, card dùng nền gần đặc (alpha ~0.09 trên nền tối) để giữ cảm giác kính
+  mà không nướng GPU. Desktop giữ blur 14px.
 - Mục tiêu: không có layout shift khi font load; animation 60fps trên iPhone 11 / Pixel 4a.
 
 ---
@@ -289,6 +302,7 @@ Aurora **không dùng `filter: blur()`** — dùng gradient có stop mềm để
 | `app/components/ThemeControls.tsx` | UI mới, thêm công tắc giảm chuyển động |
 | `app/components/Reveal.tsx` | **mới** — client wrapper dùng IntersectionObserver |
 | `app/components/SkyCursor.tsx` | **mới** — client, cursor glow + kiểm tra pointer/reduced motion |
+| `app/components/CountUp.tsx` | **mới** — client, đếm số sao khi vào khung hình, tôn trọng reduced motion |
 | `app/actions.ts` | `ActionState` thêm `at?: number` khi thành công |
 | `app/lib/messages.ts` | không đổi |
 
@@ -301,8 +315,9 @@ theme panel → responsive → reduced motion. Không dùng Tailwind, không th�
 ### Component boundaries
 
 - `page.tsx` vẫn là server component, gọi `getMessages()`.
-- Chỉ 3 client component: `MessageForm` (đã có), `Reveal` (mới), `SkyCursor` (mới),
-  `ThemeControls`/`ThemeProvider` (đã có). `MessageList` vẫn server.
+- Client component: `MessageForm` (đã có), `Reveal` (mới), `SkyCursor` (mới), `CountUp` (mới),
+  `ThemeControls`/`ThemeProvider` (đã có). `MessageList` vẫn server; hiệu ứng `is-new` do
+  `MessageForm` gắn trực tiếp vào card đầu tiên khi người dùng bấm xem, không cần state chung.
 - `Reveal` nhận `children` từ server component — không kéo dữ liệu xuống client.
 
 ---
@@ -324,7 +339,8 @@ theme panel → responsive → reduced motion. Không dùng Tailwind, không th�
 ## 11. Tiêu chí thành công
 
 - Mở trang: trong 3 giây đầu thấy được bầu trời chuyển động, tiêu đề, và lời mời viết.
-- Gửi thành công: có phản hồi rõ + hiệu ứng sao băng; lời nhắn mới xuất hiện đầu wall.
+- Gửi thành công: có phản hồi rõ + hiệu ứng sao băng; lời nhắn mới xuất hiện đầu wall và có
+  lối "Xem ngôi sao của bạn" rõ ràng.
 - QR quét được trên điện thoại thật, cả light và dark.
 - Đổi sáng/tối/màu nền vẫn hoạt động, không FOUC.
 - Bật "Giảm chuyển động"/OS reduced motion: trang tĩnh, vẫn đẹp và dùng được.
@@ -332,7 +348,21 @@ theme panel → responsive → reduced motion. Không dùng Tailwind, không th�
 
 ---
 
-## 12. Việc để builder tự quyết
+## 12. Quyết định đã chốt sau vòng review
+
+Bốn điểm reviewer nêu, tôi chốt như sau (bạn có thể bác khi đọc):
+
+1. **Không auto-scroll sau khi gửi.** Giữ người dùng ở form, thêm nút "Xem ngôi sao của bạn"
+   để họ chủ động cuộn; tránh scroll-jacking và không cần đồng bộ state form ↔ wall.
+2. **Không phát minh brand.** Hero chỉ có glyph `✦` trang trí + count pill; h1 vẫn là danh tính
+   duy nhất của trang.
+3. **Mobile bỏ glass blur.** Card gần đặc, giữ nguyên bố cục và màu; desktop giữ glass.
+   Ưu tiên 60fps hơn chất liệu blur.
+4. **Màu nền tự chọn vẫn tự do**, nhưng scrim tự động theo độ sáng bảo vệ tương phản; preset
+   không bị đổi màu. Cam kết tương phản ở mục 7 áp dụng cho theme/preset, màu lạ được bảo vệ
+   bằng scrim.
+
+## 13. Việc để builder tự quyết
 
 - Vị trí chính xác của các ngôi sao, số lượng chấm, góc sao băng.
 - Bo góc, khoảng đệm cụ thể trong khoảng đã nêu.
