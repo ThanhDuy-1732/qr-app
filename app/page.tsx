@@ -4,6 +4,7 @@ import MessageForm from '@/app/components/MessageForm'
 import MessageList from '@/app/components/MessageList'
 import Reveal from '@/app/components/Reveal'
 import CountUp from '@/app/components/CountUp'
+import SkyCta from '@/app/components/SkyCta'
 
 export const dynamic = 'force-dynamic'
 
@@ -42,9 +43,9 @@ export default async function Home() {
             <a className="btn btn--primary" href="#wish-form">
               Viết ước mơ của bạn <span aria-hidden="true">↗</span>
             </a>
-            <a className="btn btn--ghost" href="#wish-wall">
+            <SkyCta className="btn btn--ghost" href="#wish-wall">
               Xem bầu trời
-            </a>
+            </SkyCta>
           </div>
         </div>
 
