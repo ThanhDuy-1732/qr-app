@@ -3,6 +3,7 @@ import { getMessages } from '@/app/lib/messages'
 import MessageForm from '@/app/components/MessageForm'
 import MessageList from '@/app/components/MessageList'
 import Reveal from '@/app/components/Reveal'
+import CountUp from '@/app/components/CountUp'
 
 export const dynamic = 'force-dynamic'
 
@@ -21,7 +22,9 @@ export default async function Home() {
           <span className="hero-mark" aria-hidden="true">
             ✦
           </span>
-          <span className="hero-count">{messages.length} ngôi sao đang sáng</span>
+          <span className="hero-count">
+            <CountUp value={messages.length} /> ngôi sao đang sáng
+          </span>
         </div>
 
         <div className="hero-copy">
@@ -103,10 +106,12 @@ export default async function Home() {
           <h2 id="wall-heading" className="wall-heading" tabIndex={-1}>
             Bầu trời hôm nay
           </h2>
-          <span className="wall-badge">{messages.length} ngôi sao</span>
+          <span className="wall-badge">
+            <CountUp value={messages.length} /> ngôi sao
+          </span>
         </Reveal>
 
-        <Reveal delay={80}>
+        <Reveal className="wall-reveal" delay={80}>
           <MessageList messages={messages} />
         </Reveal>
       </section>

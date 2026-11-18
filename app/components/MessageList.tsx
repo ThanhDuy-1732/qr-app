@@ -1,4 +1,5 @@
 import { Message } from '@/app/lib/messages'
+import { getAvatarColor, getInitial } from '@/app/lib/avatar'
 
 function formatDate(iso: string): string {
   try {
@@ -14,30 +15,6 @@ function formatDate(iso: string): string {
   }
 }
 
-function getInitial(name: string): string {
-  const trimmed = (name ?? '').trim()
-  if (!trimmed || trimmed === 'Ẩn danh') return '?'
-  // Get first character of each word, max 2
-  const words = trimmed.split(/\s+/)
-  if (words.length >= 2) {
-    return (words[0][0] + words[words.length - 1][0]).toUpperCase()
-  }
-  return trimmed[0].toUpperCase()
-}
-
-const AVATAR_COLORS = [
-  '#7c3aed', '#2563eb', '#059669', '#d97706',
-  '#dc2626', '#9333ea', '#0891b2', '#65a30d',
-]
-
-function getAvatarColor(id: string): string {
-  let hash = 0
-  for (let i = 0; i < id.length; i++) {
-    hash = (hash * 31 + id.charCodeAt(i)) % AVATAR_COLORS.length
-  }
-  return AVATAR_COLORS[Math.abs(hash)]
-}
-
 interface MessageListProps {
   messages: Message[]
 }
@@ -45,40 +22,42 @@ interface MessageListProps {
 export default function MessageList({ messages }: MessageListProps) {
   if (messages.length === 0) {
     return (
-      <div className="empty-state">
-        <span className="empty-icon">🌟</span>
-        <p>Chưa có lời nhắn nào. Hãy là người đầu tiên!</p>
+      <div className="wall-empty">
+        <span className="wall-empty-star" aria-hidden="true">
+          ✦
+        </span>
+        <p>Bầu trời đang chờ ngôi sao đầu tiên.</p>
       </div>
     )
   }
 
   return (
-    <ul className="message-list" aria-label="Danh sách lời nhắn">
+    <ul className="wish-grid" aria-label="Danh sách lời nhắn">
       {messages.map((msg, index) => (
         <li
           key={msg.id}
-          className="message-item"
-          style={{ animationDelay: `${index * 60}ms` }}
+          className="wish-card"
+          style={{ '--i': Math.min(index, 5) } as React.CSSProperties}
         >
           <div
-            className="message-avatar"
+            className="wish-avatar"
             style={{ background: getAvatarColor(msg.id) }}
             aria-hidden="true"
           >
             {getInitial(msg.author)}
           </div>
-          <div className="message-body">
-            <div className="message-header">
-              <span className="message-author">{msg.author || 'Ẩn danh'}</span>
+          <div className="wish-body">
+            <div className="wish-meta">
+              <b className="wish-name">{msg.author || 'Ẩn danh'}</b>
               <time
-                className="message-time"
+                className="wish-time"
                 dateTime={msg.createdAt}
                 suppressHydrationWarning
               >
                 {formatDate(msg.createdAt)}
               </time>
             </div>
-            <p className="message-text">{msg.text}</p>
+            <p className="wish-text">{msg.text}</p>
           </div>
         </li>
       ))}
