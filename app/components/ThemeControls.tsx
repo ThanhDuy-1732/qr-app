@@ -2,14 +2,10 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useTheme } from './ThemeProvider'
+import { THEME_BASE } from '@/app/lib/resolve-custom-bg'
 
 const DARK_PRESETS = ['#04050d', '#020d1f', '#030f07', '#140206', '#0a0905', '#060614']
 const LIGHT_PRESETS = ['#f6f1ff', '#ffffff', '#eef4ff', '#eefff6', '#fff9ee', '#ffeef4']
-
-const DEFAULT_BG: Record<string, string> = {
-  dark: '#04050d',
-  light: '#f6f1ff',
-}
 
 export default function ThemeControls() {
   const {
@@ -25,7 +21,7 @@ export default function ThemeControls() {
   const fabRef = useRef<HTMLButtonElement>(null)
 
   const presets = theme === 'dark' ? DARK_PRESETS : LIGHT_PRESETS
-  const activeBg = customBg || DEFAULT_BG[theme]
+  const activeBg = customBg || THEME_BASE[theme]
 
   // Close on outside click
   useEffect(() => {
@@ -126,7 +122,7 @@ export default function ThemeControls() {
                 className={`theme-swatch${activeBg === color ? ' theme-swatch--on' : ''}`}
                 style={{ '--swatch': color } as React.CSSProperties}
                 onClick={() =>
-                  setCustomBg(color === DEFAULT_BG[theme] ? '' : color)
+                  setCustomBg(color === THEME_BASE[theme] ? '' : color)
                 }
                 aria-label={`Màu ${color}`}
                 aria-pressed={activeBg === color}

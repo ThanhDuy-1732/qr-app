@@ -9,15 +9,21 @@ export const AVATAR_COLORS = [
   '#65a30d',
 ]
 
+/** Public label for a wish author; whitespace-only names are anonymous. */
+export function getDisplayName(name: string): string {
+  const trimmed = (name ?? '').trim()
+  return trimmed || 'Ẩn danh'
+}
+
 /** Two-letter avatar initial; anonymous or blank names fall back to "?". */
 export function getInitial(name: string): string {
-  const trimmed = (name ?? '').trim()
-  if (!trimmed || trimmed === 'Ẩn danh') return '?'
-  const words = trimmed.split(/\s+/)
+  const display = getDisplayName(name)
+  if (display === 'Ẩn danh') return '?'
+  const words = display.split(/\s+/)
   if (words.length >= 2) {
     return (words[0][0] + words[words.length - 1][0]).toUpperCase()
   }
-  return trimmed[0].toUpperCase()
+  return display[0].toUpperCase()
 }
 
 /** Stable avatar color derived from the message id. */

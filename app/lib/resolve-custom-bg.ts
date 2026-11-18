@@ -1,5 +1,12 @@
 export type Theme = 'dark' | 'light'
 
+/** Pre-paint base colours; also used by the anti-FOUC script and the picker. */
+export const THEME_BASE: Record<Theme, string> = {
+  dark: '#04050d',
+  light: '#f6f1ff',
+}
+
+// Channel form of THEME_BASE, kept beside it so the two cannot drift.
 const BASE: Record<Theme, [number, number, number]> = {
   dark: [4, 5, 13],
   light: [246, 241, 255],

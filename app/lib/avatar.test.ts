@@ -1,6 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { AVATAR_COLORS, getAvatarColor, getInitial } from './avatar.ts'
+import { AVATAR_COLORS, getAvatarColor, getDisplayName, getInitial } from './avatar.ts'
 
 test('empty and anonymous names get ?', () => {
   assert.equal(getInitial(''), '?')
@@ -15,6 +15,12 @@ test('uses first and last initials', () => {
 
 test('single name uses one letter', () => {
   assert.equal(getInitial('An'), 'A')
+})
+
+test('whitespace names display as Ẩn danh', () => {
+  assert.equal(getDisplayName('   '), 'Ẩn danh')
+  assert.equal(getDisplayName(''), 'Ẩn danh')
+  assert.equal(getDisplayName('  Hạnh  '), 'Hạnh')
 })
 
 test('avatar color is deterministic and from the palette', () => {

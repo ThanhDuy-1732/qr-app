@@ -1,5 +1,5 @@
 import { Message } from '@/app/lib/messages'
-import { getAvatarColor, getInitial } from '@/app/lib/avatar'
+import { getAvatarColor, getDisplayName, getInitial } from '@/app/lib/avatar'
 
 function formatDate(iso: string): string {
   try {
@@ -33,34 +33,37 @@ export default function MessageList({ messages }: MessageListProps) {
 
   return (
     <ul className="wish-grid" aria-label="Danh sách lời nhắn">
-      {messages.map((msg, index) => (
-        <li
-          key={msg.id}
-          className="wish-card"
-          style={{ '--i': Math.min(index, 5) } as React.CSSProperties}
-        >
-          <div
-            className="wish-avatar"
-            style={{ background: getAvatarColor(msg.id) }}
-            aria-hidden="true"
+      {messages.map((msg, index) => {
+        const name = getDisplayName(msg.author)
+        return (
+          <li
+            key={msg.id}
+            className="wish-card"
+            style={{ '--i': Math.min(index, 5) } as React.CSSProperties}
           >
-            {getInitial(msg.author)}
-          </div>
-          <div className="wish-body">
-            <div className="wish-meta">
-              <b className="wish-name">{msg.author || 'Ẩn danh'}</b>
-              <time
-                className="wish-time"
-                dateTime={msg.createdAt}
-                suppressHydrationWarning
-              >
-                {formatDate(msg.createdAt)}
-              </time>
+            <div
+              className="wish-avatar"
+              style={{ background: getAvatarColor(msg.id) }}
+              aria-hidden="true"
+            >
+              {getInitial(name)}
             </div>
-            <p className="wish-text">{msg.text}</p>
-          </div>
-        </li>
-      ))}
+            <div className="wish-body">
+              <div className="wish-meta">
+                <b className="wish-name">{name}</b>
+                <time
+                  className="wish-time"
+                  dateTime={msg.createdAt}
+                  suppressHydrationWarning
+                >
+                  {formatDate(msg.createdAt)}
+                </time>
+              </div>
+              <p className="wish-text">{msg.text}</p>
+            </div>
+          </li>
+        )
+      })}
     </ul>
   )
 }

@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState } from 'react'
-import { resolveCustomBg } from '@/app/lib/resolve-custom-bg'
+import { resolveCustomBg, THEME_BASE } from '@/app/lib/resolve-custom-bg'
 
 export type Theme = 'dark' | 'light'
 
@@ -27,19 +27,14 @@ export function useTheme() {
   return useContext(ThemeContext)
 }
 
-const THEME_BASE: Record<Theme, string> = {
-  dark: '#04050d',
-  light: '#f6f1ff',
-}
-
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme>('dark')
   const [customBg, setCustomBgState] = useState('')
-  const [reduceMotion, setReduceMotion] = useState(false)
+  const [reduceMotion, setReduceMotionState] = useState(false)
   const [motionLoaded, setMotionLoaded] = useState(false)
 
   // One-time sync from localStorage after hydration. The inline script has
-  // already applied the visual theme and motion flag before paint.
+  // already applied the visual theme, background and motion flag before paint.
   useEffect(() => {
     const savedTheme = (localStorage.getItem('theme') as Theme | null) ?? 'dark'
     const savedBg = localStorage.getItem('customBg') ?? ''
@@ -51,7 +46,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     /* eslint-disable react-hooks/set-state-in-effect -- one-time localStorage sync */
     setThemeState(savedTheme)
     setCustomBgState(savedBg)
-    setReduceMotion(
+    setReduceMotionState(
       savedMotion === null ? prefersReduced : savedMotion === 'true'
     )
     setMotionLoaded(true)
@@ -66,24 +61,34 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!motionLoaded) return
     document.documentElement.dataset.motion = reduceMotion ? 'reduced' : 'off'
-    localStorage.setItem('reduceMotion', String(reduceMotion))
   }, [reduceMotion, motionLoaded])
 
   useEffect(() => {
     if (customBg) {
-      document.documentElement.style.setProperty(
-        '--custom-bg',
-        resolveCustomBg(theme, customBg)
-      )
+      const resolved = resolveCustomBg(theme, customBg)
+      document.documentElement.style.setProperty('--custom-bg', resolved)
       localStorage.setItem('customBg', customBg)
+      localStorage.setItem('customBgResolved', resolved)
     } else {
       document.documentElement.style.setProperty(
         '--custom-bg',
         THEME_BASE[theme]
       )
       localStorage.removeItem('customBg')
+      localStorage.removeItem('customBgResolved')
     }
   }, [customBg, theme])
+
+  // Persist only when the visitor actually uses the switch; an OS-derived
+  // default must keep following the OS on later visits.
+  function setReduceMotion(value: boolean) {
+    setReduceMotionState(value)
+    try {
+      localStorage.setItem('reduceMotion', String(value))
+    } catch {
+      /* storage can be unavailable in private modes; the state still applies */
+    }
+  }
 
   return (
     <ThemeContext.Provider
