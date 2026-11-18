@@ -1,7 +1,7 @@
 # Nơi chấp cánh ước mơ — Thiết kế lại giao diện theo hướng "Bầu trời ước mơ"
 
 - **Ngày:** 2026-11-17
-- **Trạng thái:** Chờ duyệt
+- **Trạng thái:** Đã duyệt và triển khai
 - **Phạm vi:** Toàn bộ giao diện trang chủ (`/`), không đổi backend
 
 ---
