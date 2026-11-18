@@ -2,6 +2,7 @@ import Image from 'next/image'
 import { getMessages } from '@/app/lib/messages'
 import MessageForm from '@/app/components/MessageForm'
 import MessageList from '@/app/components/MessageList'
+import Reveal from '@/app/components/Reveal'
 
 export const dynamic = 'force-dynamic'
 
@@ -9,86 +10,111 @@ export default async function Home() {
   const messages = await getMessages()
 
   return (
-    <main className="main-layout">
-      {/* Hero / Header */}
-      <header className="hero">
-        <div className="hero-glow" aria-hidden="true" />
-        <h1 className="hero-title">
-          <span className="hero-emoji">✨</span>
-          Nơi chấp cánh ước mơ
-        </h1>
-        <p className="hero-subtitle">
-          Hãy viết ước mơ của bạn vào đây và chúng ta cùng nhau cầu nguyện cho giấc mơ của bạn thành hiện thực 🙏
-        </p>
+    <main className="page">
+      <a className="skip-link" href="#wish-form">
+        Bỏ qua đến lời nhắn
+      </a>
+
+      {/* Hero */}
+      <header className="sky-hero">
+        <div className="hero-top">
+          <span className="hero-mark" aria-hidden="true">
+            ✦
+          </span>
+          <span className="hero-count">{messages.length} ngôi sao đang sáng</span>
+        </div>
+
+        <div className="hero-copy">
+          <p className="hero-kicker">Gửi một điều bạn mong</p>
+          <h1 className="hero-title">
+            Nơi chấp cánh
+            <br />
+            <em>ước mơ</em>
+          </h1>
+          <p className="hero-sub">
+            Mỗi lời nhắn là một ngôi sao. Viết điều bạn đang mong, cả bầu trời sẽ
+            cùng cầu nguyện.
+          </p>
+          <div className="hero-actions">
+            <a className="btn btn--primary" href="#wish-form">
+              Viết ước mơ của bạn <span aria-hidden="true">↗</span>
+            </a>
+            <a className="btn btn--ghost" href="#wish-wall">
+              Xem bầu trời
+            </a>
+          </div>
+        </div>
+
+        <a
+          className="hero-scroll"
+          href="#wish-form"
+          aria-label="Cuộn xuống phần gửi lời nhắn"
+        />
       </header>
 
-      <div className="content-grid">
-        {/* QR Code Section */}
-        <section className="qr-section" aria-labelledby="qr-heading">
-          <h2 id="qr-heading" className="section-title">
-            📱 Quét QR để ủng hộ
-          </h2>
-
-          <div className="qr-pair">
-            {/* MoMo */}
-            <div className="qr-card">
-              <div className="qr-image-wrapper">
-                <Image
-                  src="/qr-momo.jpg"
-                  alt="Mã QR MoMo nhận tiền"
-                  width={240}
-                  height={240}
-                  priority
-                  className="qr-image"
-                />
-              </div>
-              <span className="qr-method-badge qr-method--momo">
-                📱 MoMo
-              </span>
-            </div>
-
-            {/* VietQR / Ngân hàng */}
-            <div className="qr-card">
-              <div className="qr-image-wrapper">
-                <Image
-                  src="/qr-vietqr.jpg"
-                  alt="Mã QR VietQR ngân hàng nhận tiền"
-                  width={240}
-                  height={240}
-                  priority
-                  className="qr-image"
-                />
-              </div>
-              <span className="qr-method-badge qr-method--bank">
-                🏦 Ngân hàng
-              </span>
-            </div>
-          </div>
-
-          <p className="qr-hint">
-            Mở MoMo hoặc app ngân hàng → Quét mã → Chuyển khoản
-          </p>
-          <div className="qr-badge">
-            <span>✅</span> Hỗ trợ tất cả ngân hàng Việt Nam
-          </div>
-        </section>
-
-
-        {/* Form Section */}
-        <section className="form-section" aria-labelledby="form-heading">
-          <h2 id="form-heading" className="sr-only">Gửi lời nhắn</h2>
+      {/* Wish form + support */}
+      <section
+        id="wish-form"
+        className="wish-panel"
+        aria-label="Gửi lời nhắn và ủng hộ"
+      >
+        <Reveal className="form-slot">
           <MessageForm />
-        </section>
-      </div>
+        </Reveal>
 
-      {/* Message Wall */}
-      <section className="wall-section" aria-labelledby="wall-heading">
-        <h2 id="wall-heading" className="wall-title">
-          🗣️ Mọi người nói gì
-          <span className="wall-count">{messages.length}</span>
-        </h2>
-        <MessageList messages={messages} />
+        <Reveal className="support-card" delay={90}>
+          <h2 className="panel-title">Ủng hộ giấc mơ</h2>
+          <p className="panel-sub">
+            Mở MoMo hoặc app ngân hàng → quét mã → chuyển khoản.
+          </p>
+
+          <div className="qr-grid">
+            <div className="qr-tile">
+              <Image
+                src="/qr-momo.jpg"
+                alt="Mã QR MoMo nhận tiền"
+                width={580}
+                height={649}
+                className="qr-image"
+                sizes="(max-width: 440px) 280px, (max-width: 860px) 40vw, 200px"
+              />
+              <span className="qr-label">MoMo</span>
+            </div>
+            <div className="qr-tile">
+              <Image
+                src="/qr-vietqr.jpg"
+                alt="Mã QR VietQR ngân hàng nhận tiền"
+                width={626}
+                height={723}
+                className="qr-image"
+                sizes="(max-width: 440px) 280px, (max-width: 860px) 40vw, 200px"
+              />
+              <span className="qr-label">VietQR</span>
+            </div>
+          </div>
+
+          <p className="support-badge">✅ Hỗ trợ tất cả ngân hàng Việt Nam</p>
+        </Reveal>
       </section>
+
+      {/* Wish wall */}
+      <section id="wish-wall" className="sky-wall" aria-labelledby="wall-heading">
+        <Reveal className="wall-head">
+          <h2 id="wall-heading" className="wall-heading" tabIndex={-1}>
+            Bầu trời hôm nay
+          </h2>
+          <span className="wall-badge">{messages.length} ngôi sao</span>
+        </Reveal>
+
+        <Reveal delay={80}>
+          <MessageList messages={messages} />
+        </Reveal>
+      </section>
+
+      <footer className="page-footer">
+        <span>✦ Mỗi lời nhắn là một ngôi sao.</span>
+        <span>{new Date().getFullYear()}</span>
+      </footer>
     </main>
   )
 }
