@@ -6,6 +6,7 @@ import { saveMessage } from '@/app/lib/messages'
 export interface ActionState {
   success: boolean
   error?: string
+  at?: number
 }
 
 export async function submitMessage(
@@ -26,7 +27,7 @@ export async function submitMessage(
   try {
     await saveMessage(name, message)
     revalidatePath('/')
-    return { success: true }
+    return { success: true, at: Date.now() }
   } catch {
     return { success: false, error: 'Có lỗi xảy ra. Vui lòng thử lại.' }
   }
