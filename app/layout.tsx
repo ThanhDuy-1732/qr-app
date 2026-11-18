@@ -40,7 +40,10 @@ export const viewport: Viewport = {
 const antiFlashScript = `(function(){try{
   var t=localStorage.getItem('theme')||'dark';
   var b=localStorage.getItem('customBg');
+  var m=localStorage.getItem('reduceMotion');
+  var reduce=m==='true'||(m===null&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   document.documentElement.setAttribute('data-theme',t);
+  document.documentElement.setAttribute('data-motion',reduce?'reduced':'off');
   if(b)document.documentElement.style.setProperty('--custom-bg',b);
 }catch(e){}})();`
 
