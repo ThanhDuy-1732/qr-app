@@ -4,6 +4,7 @@ import './globals.css'
 import { ThemeProvider } from '@/app/components/ThemeProvider'
 import ThemeControls from '@/app/components/ThemeControls'
 import SkyBackdrop from '@/app/components/SkyBackdrop'
+import TapFireworks from '@/app/components/TapFireworks'
 
 const inter = Inter({
   subsets: ['latin', 'vietnamese'],
@@ -66,6 +67,7 @@ export default function RootLayout({
       <body suppressHydrationWarning>
         <ThemeProvider>
           <SkyBackdrop />
+          <TapFireworks />
           {children}
           <ThemeControls />
         </ThemeProvider>
