@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from 'react'
 import { isTapGesture, TAP_MAX_DISTANCE } from '@/app/lib/tap-gesture'
+import { sparkColor, sparkHeadColor } from '@/app/lib/firework-color'
+import { drawFlash, type Flash } from '@/app/lib/firework-flash'
 import { useTheme } from './ThemeProvider'
 
 const TAP_COUNT = 140
@@ -42,15 +44,6 @@ interface Spark {
   sparkle: boolean
 }
 
-interface Flash {
-  x: number
-  y: number
-  t: number
-  ttl: number
-  rgb: [number, number, number]
-  radius: number
-}
-
 interface Meteor {
   x: number
   y: number
@@ -75,10 +68,6 @@ interface TapStart {
 
 function rand(min: number, max: number) {
   return min + Math.random() * (max - min)
-}
-
-function easeOutCubic(t: number) {
-  return 1 - Math.pow(1 - t, 3)
 }
 
 function hexToRgb(hex: string): [number, number, number] {
@@ -151,15 +140,13 @@ export default function TapFireworks() {
       })
 
       const speedScale = width < 700 ? 0.92 : 1
+      const light = isLightTheme()
 
       for (let i = 0; i < TAP_COUNT; i++) {
         if (sparks.length >= MAX_SPARKS) break
 
         const roll = Math.random()
-        const color =
-          Math.random() < 0.22
-            ? '#ffffff'
-            : colors[Math.floor(Math.random() * colors.length)]
+        const color = sparkColor(colors, light, Math.random(), Math.random())
         const angle = Math.random() * Math.PI * 2
         const spark: Spark = {
           x: x + rand(-2.5, 2.5),
@@ -264,7 +251,8 @@ export default function TapFireworks() {
 
       drawing.clearRect(0, 0, width, height)
       drawing.globalAlpha = 1
-      drawing.globalCompositeOperation = isLightTheme() ? 'source-over' : 'lighter'
+      const light = isLightTheme()
+      drawing.globalCompositeOperation = light ? 'source-over' : 'lighter'
       drawing.lineCap = 'round'
 
       for (let f = flashes.length - 1; f >= 0; f--) {
@@ -276,37 +264,7 @@ export default function TapFireworks() {
           continue
         }
 
-        const radius = flash.radius * (0.35 + easeOutCubic(progress) * 0.8)
-        const alpha = Math.pow(1 - progress, 1.8)
-        const glow = drawing.createRadialGradient(
-          flash.x,
-          flash.y,
-          0,
-          flash.x,
-          flash.y,
-          radius
-        )
-        glow.addColorStop(0, rgba(flash.rgb, 0.38 * alpha))
-        glow.addColorStop(0.32, rgba(flash.rgb, 0.18 * alpha))
-        glow.addColorStop(1, rgba(flash.rgb, 0))
-        drawing.fillStyle = glow
-        drawing.beginPath()
-        drawing.arc(flash.x, flash.y, radius, 0, Math.PI * 2)
-        drawing.fill()
-
-        if (progress < 0.45) {
-          drawing.globalAlpha = (1 - progress / 0.45) * 0.85
-          drawing.fillStyle = '#ffffff'
-          drawing.beginPath()
-          drawing.arc(
-            flash.x,
-            flash.y,
-            10 * (1 - progress / 0.45) + 1.5,
-            0,
-            Math.PI * 2
-          )
-          drawing.fill()
-        }
+        drawFlash(drawing, flash, progress, light)
       }
 
       for (let i = sparks.length - 1; i >= 0; i--) {
@@ -362,7 +320,7 @@ export default function TapFireworks() {
 
         if (lifeRatio > 0.3) {
           drawing.globalAlpha = alpha * 0.9
-          drawing.fillStyle = '#ffffff'
+          drawing.fillStyle = sparkHeadColor(spark.color, light)
           drawing.beginPath()
           drawing.arc(spark.x, spark.y, Math.max(0.7, size * 0.55), 0, Math.PI * 2)
           drawing.fill()
